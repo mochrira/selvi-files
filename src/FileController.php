@@ -2,56 +2,33 @@
 
 namespace Selvi\Files;
 use Selvi\Exception;
-use Selvi\Resource;
+use Selvi\Controller;
 use Selvi\Route;
-use Selvi\Database\Manager as Database;
-use Selvi\Files\Models\File;
 
-class FileController extends Resource {
+class FileController extends Controller {
 
     public static $path;
-    public static $schema;
 
     public static function setup($config = []) {
         if(isset($config['path'])) {
             self::$path = $config['path'];
         }
-        if(isset($config['schema'])) {
-            self::$schema = $config['schema'];
-            Database::get(self::$schema)->addMigration(__DIR__.'/../migrations');
-        }
-        Route::apiResource('files', '\\Selvi\\Files\\FileController', ['get', 'post', 'delete']);
+        Route::post('/files', '\\Selvi\\Files\\FileController@upload');
+        Route::get('/files/(:any)', '\\Selvi\\Files\\FileController@download');
     }
-
-    protected $modelClass = File::class;
-    protected $modelAlias = 'File';
     
-    function validateData($data, $file = null) {
-        if($this->input->method() == 'POST') {
-            $file = $this->input->file('file');
-            $data = [
-                'path' => '/',
-                'name' => $file['name'],
-                'mimeType' => mime_content_type($file['tmp_name']),
-                'size' => filesize($file['tmp_name'])
-            ];
-
-            if(!is_dir(self::$path)) {
-                mkdir(self::$path);
-            }
-            move_uploaded_file($file['tmp_name'], self::$path.$data['path'].$file['name']);
+    function upload() {
+        $file = $this->input->file('file');
+        if(!is_dir(self::$path)) {
+            mkdir(self::$path);
         }
-        return $data;
+        move_uploaded_file($file['tmp_name'], self::$path.'/'.$file['name']);
+        return jsonResponse([
+            'fileUrl' => base_url().'files/'.$file['name']
+        ]);
     }
 
-    function afterInsert($file, &$response = null) {
-        $response->setContent(json_encode([
-            'idFile' => $file->idFile,
-            'fileUrl' => base_url().'files/'.$file->name
-        ]));
-    }
-
-    function get() {
+    function download() {
         $file = self::$path.str_replace('/files', '', urldecode($this->uri->getUri()));
         if(!is_file($file)) {
             return response('', 404);
