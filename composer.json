@@ -1,0 +1,19 @@
+{
+    "name": "mochrira/selvi-files",
+    "description": "Library untuk upload file ke selvi framework",
+    "authors": [
+        {
+            "name": "Moch Rizal Rachmadani",
+            "email": "mochrira@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "mochrira/selvi-framework": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "Selvi\\Files\\": "src/"
+        }
+    }
+}
