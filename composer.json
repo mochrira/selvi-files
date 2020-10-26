@@ -7,9 +7,8 @@
             "email": "mochrira@gmail.com"
         }
     ],
-    "minimum-stability": "dev",
     "require": {
-        "mochrira/selvi-framework": "dev-master"
+        "mochrira/selvi-framework": "^0.3.44"
     },
     "autoload": {
         "psr-4": {
