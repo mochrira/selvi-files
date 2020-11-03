@@ -8,15 +8,6 @@ This is library to upload and download files with selvi framework.
 composer require mochrira/selvi-files
 ```
 
-## Setup
-
-```
-use Selvi\Files;
-Files::setup([
-    'basePath' => __DIR__.'/files'
-]);
-```
-
 ## Usage
 
 ```
@@ -47,6 +38,9 @@ class UploadController extends Controller {
 
 }
 
+\Selvi\Files::setup([
+    'basePath' => __DIR__.'/files'
+]);
 \Selvi\Route::post('/upload', 'UploadController@upload');
 \Selvi\Route::post('/download', 'UploadController@download');
 \Selvi\Framework::run();
