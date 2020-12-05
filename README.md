@@ -2,6 +2,12 @@
 
 This is library to upload and download files with selvi framework.
 
+## Requirements
+
+- php^7.4
+- php_fileinfo module
+- mochrira/selvi-framework^0.3.12
+
 ## Installing
 
 ```

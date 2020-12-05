@@ -8,7 +8,7 @@
         }
     ],
     "require": {
-        "mochrira/selvi-framework": "^0.3.44"
+        "mochrira/selvi-framework": "^0.4.0"
     },
     "autoload": {
         "psr-4": {
