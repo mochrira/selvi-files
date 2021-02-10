@@ -34,7 +34,8 @@ class Files {
                 }
             }
 
-            $filePath = $params['name'] ?: $file['name'];
+            $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
+            $filePath = $params['name'].'.'.$ext ?: $file['name'];
             $fullPath = self::$basePath.'/'.$filePath;
             if(isset($params['path']) && strlen($params['path']) > 0) {
                 if(!is_dir(self::$basePath.'/'.$params['path'])) {
