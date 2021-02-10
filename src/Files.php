@@ -34,13 +34,13 @@ class Files {
                 }
             }
 
-            $filePath = $file['name'];
+            $filePath = $params['name'] ?: $file['name'];
             $fullPath = self::$basePath.'/'.$filePath;
             if(isset($params['path']) && strlen($params['path']) > 0) {
                 if(!is_dir(self::$basePath.'/'.$params['path'])) {
                     mkdir(self::$basePath.'/'.$params['path'], 0777, true);
                 }
-                $filePath = $params['path'].'/'.$file['name'];
+                $filePath = $params['path'].'/'.$filePath;
                 $fullPath = self::$basePath.'/'.$filePath;
             }
             if(move_uploaded_file($file['tmp_name'], $fullPath)) {
