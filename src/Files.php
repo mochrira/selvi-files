@@ -7,14 +7,6 @@ use Selvi\Exception;
 
 class Files {
 
-    private static $basePath;
-
-    static function setup($config = []) {
-        if(isset($config['basePath'])) {
-            self::$basePath = $config['basePath'];
-        }
-    }
-
     function upload($name = 'file', $params = []) {
         try {
             $input = Factory::load(Input::class, [], 'input');
@@ -36,13 +28,13 @@ class Files {
 
             $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
             $filePath = $params['name'].'.'.$ext ?: $file['name'];
-            $fullPath = self::$basePath.'/'.$filePath;
+            $fullPath = $filePath;
             if(isset($params['path']) && strlen($params['path']) > 0) {
-                if(!is_dir(self::$basePath.'/'.$params['path'])) {
-                    mkdir(self::$basePath.'/'.$params['path'], 0777, true);
+                if(!is_dir($params['path'])) {
+                    mkdir($params['path'], 0777, true);
                 }
                 $filePath = $params['path'].'/'.$filePath;
-                $fullPath = self::$basePath.'/'.$filePath;
+                $fullPath = $filePath;
             }
             if(move_uploaded_file($file['tmp_name'], $fullPath)) {
                 $fileInfo = pathinfo($fullPath);
@@ -64,7 +56,7 @@ class Files {
     }
 
     function download($path) {
-        $file = self::$basePath.'/'.$path;
+        $file = $path;
         if(!is_file($file)) {
             return response('', 404);
         }
